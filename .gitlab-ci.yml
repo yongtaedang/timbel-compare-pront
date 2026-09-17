@@ -1,0 +1,57 @@
+# timbel-compare-front CI — 사내 GitLab, docker executor 러너 기준.
+#
+# verify: lint → 타입체크 → 단위 테스트(파일 짝짓기·폼 조립). 비교 로직이 여기 없으므로
+#         테스트도 가볍다 — 수치 검증은 timbel-compare-api 쪽 pytest가 한다.
+# build : `npm run build:dev`로 정적 export(out/)를 만들어 아티팩트로 남긴다.
+# image : Dockerfile로 이미지를 빌드해 Container Registry에 푸시(kaniko, dind 불필요).
+#         기본 브랜치에서 수동 트리거, BUILD_PROFILE=prd로 운영 이미지를 만든다 —
+#         NEXT_PUBLIC_API_URL이 빌드타임에 박히므로 환경마다 이미지가 다르다.
+
+stages: [verify, build]
+
+default:
+  image: node:22
+  cache:
+    key:
+      files: [package-lock.json]
+    paths: [.npm/]
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+
+verify:
+  stage: verify
+  script:
+    - npm run lint
+    - npm run typecheck
+    - npm test
+
+build:
+  stage: build
+  needs: [verify]
+  script:
+    - npm run build:dev
+  artifacts:
+    paths: [out/]
+    expire_in: 1 week
+
+image:
+  stage: build
+  needs: [verify]
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  cache: []
+  before_script: []
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context "$CI_PROJECT_DIR"
+      --dockerfile "$CI_PROJECT_DIR/Dockerfile"
+      --build-arg BUILD_PROFILE=prd
+      --destination "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+      --destination "$CI_REGISTRY_IMAGE:latest"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+      allow_failure: true

@@ -1,0 +1,20 @@
+node_modules
+.next
+out
+.git
+.claude
+.idea
+.npm
+docs
+tests
+cli
+*.tsbuildinfo
+.gitlab-ci.yml
+
+# .env*는 기본 제외 — .env.local(로컬 전용)과 진짜 시크릿 파일을 빌드 컨텍스트 밖에 둔다.
+# .env.dev/.env.prd만 예외로 포함한다: NEXT_PUBLIC_* 값만 담고 있어(정적 export 시 클라이언트
+# 번들에 그대로 노출 — 비밀 아님) 이미 git에 추적되고, `npm run build:${BUILD_PROFILE}`가
+# 이미지 빌드 중 이 파일을 읽어 값을 인라인해야 한다.
+.env*
+!.env.dev
+!.env.prd

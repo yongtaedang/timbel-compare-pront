@@ -1,0 +1,18 @@
+node_modules/
+.next/
+/out/
+.env
+.env.*
+!.env.example
+# .env.dev/.env.prd는 시크릿이 아니다(NEXT_PUBLIC_* 값만 — 정적 export 빌드 시 이미
+# 클라이언트 번들에 그대로 인라인되어 브라우저에 노출됨) — CI/Docker 빌드가 이 파일들을
+# 필요로 하므로 git에 추적한다.
+!.env.dev
+!.env.prd
+*.tsbuildinfo
+next-env.d.ts
+.npm/
+
+# 파이썬 CLI(cli/) 실행 부산물
+__pycache__/
+*.pyc

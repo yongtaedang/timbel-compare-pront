@@ -1,0 +1,33 @@
+/* Pretendard(가변) — 한국어 UI 폰트. CDN이 막히면 아래 스택의 시스템 폰트로 폴백한다.
+   외부 @import는 반드시 @import "tailwindcss"보다 앞에 둔다(Turbopack이 순서를 지킨다). */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import "tailwindcss";
+
+/* 디자인 토큰 (Tailwind v4 CSS-first). 비교 결과의 세 가지 색(대체·삭제·삽입)은
+   파이썬 리포트의 파랑/빨강/초록을 그대로 쓴다 — 기존 사용자가 보던 색이다. */
+@theme {
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  --font-mono: "D2Coding", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --color-brand-50: #eef4ff;
+  --color-brand-100: #dbe6fe;
+  --color-brand-500: #3b66f6;
+  --color-brand-600: #2450eb;
+  --color-brand-700: #1c3dd8;
+  --color-diff: #1d4ed8;
+  --color-deleted: #dc2626;
+  --color-inserted: #16a34a;
+  --color-surface: #f8fafc;
+  --color-card: #ffffff;
+  --color-line: #e2e8f0;
+  --color-ink: #0f172a;
+  --color-ink-2: #334155;
+  --color-muted: #64748b;
+  --radius-card: 0.875rem;
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 1px 3px rgb(15 23 42 / 0.05);
+}
+
+/* 재생 중인 세그먼트 하이라이트 — 파이썬 리포트의 .segment-highlight와 같은 노랑. */
+.segment-highlight {
+  background-color: rgb(255 235 59 / 0.6);
+  border-radius: 2px;
+}
