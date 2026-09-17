@@ -25,7 +25,8 @@ COPY nginx-security-headers.conf /etc/nginx/snippets/nginx-security-headers.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /workspace/out /usr/share/nginx/html
 
-EXPOSE 80
+# 홈포트에 등록한 앱 포트(3000)와 같아야 한다 — 승격 게이트가 이 값을 대조한다.
+EXPOSE 3000
 
 HEALTHCHECK --interval=10s --timeout=3s --retries=5 --start-period=10s \
-  CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
+  CMD wget --quiet --tries=1 --spider http://localhost:3000/ || exit 1

@@ -18,7 +18,7 @@ git commit -am "chore: 운영 API 주소를 맞춘다"
 git clone <저장소 주소> timbel-compare-front
 cd timbel-compare-front
 docker compose -f deploy/dev/docker-compose.yml up -d --build
-curl -I localhost                      # 200
+curl -I localhost:3000                 # 200
 ```
 
 compose는 `BUILD_PROFILE: prd`로 빌드한다. 개발용 값으로 띄우려면 `dev`로 바꾼다.
@@ -40,7 +40,7 @@ docker compose -f deploy/dev/docker-compose.yml up -d --build
 ```nginx
 server {
     server_name compare.timbel.dev;
-    location / { proxy_pass http://127.0.0.1:80; }
+    location / { proxy_pass http://127.0.0.1:3000; }
 }
 ```
 
