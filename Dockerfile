@@ -12,7 +12,10 @@ RUN npm ci
 
 COPY . .
 
-ARG BUILD_PROFILE=dev
+# 기본값이 prd다 — 홈포트는 build-arg 없이 `docker build`만 하므로, 기본이 dev이면
+# .env.dev의 localhost 주소가 번들에 박혀 배포된 화면이 API를 못 찾는다.
+# 로컬에서 개발용 값으로 굽고 싶으면 --build-arg BUILD_PROFILE=dev를 준다.
+ARG BUILD_PROFILE=prd
 RUN npm run build:${BUILD_PROFILE}
 
 # ─── Stage 2: nginx serving ────────────────────────────────────────────────
