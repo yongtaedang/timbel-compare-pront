@@ -13,7 +13,7 @@
                     브라우저가 바로 내려받음(summary.html · summary.csv · 파일별 HTML)
 ```
 
-## 구조
+## 구조test
 
 - `next.config.ts` — `output: "export"`, `images.unoptimized: true`. SSR/서버 액션/API
   라우트를 쓰지 않는다.
